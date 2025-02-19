@@ -3,12 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script  type="javascript">
-        document.write("Hello world");
+    <title>Movie List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sigmar&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            color:white;
+            font-size:20px;
+            /* font-family:'Courier New', Courier, monospace; */
+            font-family:'Sigmar';
+           
+        }
+        body{
+            background-image:url('back.jpg');
+        }
+      .container{
+        padding:10px;
+        background-color: black;
+        height:500px;
+        width:500px;
+        margin-top:100px;
+       justify-self:center ;
+        border-radius:10px;
+      }
+      .container h2{
+        text-align:center;
+        font-size:30px;
+      }
+      .conatiner label{
+        font-size:30px;
+      }
+      .container #bu1{
+        background-color: orange;
+      }
+      #bu1:hover{
+        background-color: darkorange;
+      }
+      .container input{
+        color:black;
+        border-radius:5px;
+      }
+      .delete-btn{
+        background-color:red;
+        color:white;
+        border-radius:5px;
+      }
+      .delete-btn:hover{
+        background-color:darkred;
+      }
+      .clear-btn{
+        background-color: #ff5722;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      .clear-btn:hover{
+        background-color: #e64a19;
+      }
+      .movie-count{
+        margin-top: 10px;
+        font-style: italic;
+        color: #ffc107;
+      }
+      .button-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5px;
+      }
+    </style>
+    <script>
+        let movieArray = [];
+        
+        function addMovie(event) {
+            event.preventDefault();
+           
+            const movieInput = document.getElementById('Movie');
+            const movieName = movieInput.value.trim();
+           
+            if(movieName !== '') {
+                movieArray.push(movieName);
+                updateMovieList();
+                movieInput.value = '';
+            }
+            else{
+                alert("No movie entered");
+            }
+            return false;
+        }
+        
+        function deleteMovie(index) {
+            movieArray.splice(index, 1);
+            updateMovieList();
+        }
+        
+        function clearAllMovies() {
+            if (movieArray.length === 0) {
+                alert("Movie list is already empty!");
+                return;
+            }
+            movieArray = [];
+            updateMovieList();
+            
+        }
+        
+        function updateMovieList() {
+            const movieList = document.getElementById('MovieList');
+            const movieCount = document.getElementById('MovieCount');
+            
+            movieList.innerHTML = '';
+            movieCount.textContent = `Total Movies: ${movieArray.length}`;
+           
+            movieArray.forEach((movie, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'movie-item';
+                listItem.innerHTML = `
+                    <span>${movie}</span>
+                    <button onclick="deleteMovie(${index})" class="delete-btn">Delete</button>
+                `;
+                movieList.appendChild(listItem);
+            });
+        }
     </script>
 </head>
 <body>
-    
+    <div class="container">
+        <h2>Movie List Manager</h2>
+        <form onsubmit="return addMovie(event)">
+            <label for="Movie">Enter your favourite movie name: </label><br><br>
+            <input type="text" id="Movie" placeholder="Enter movie name...">
+            <button type="submit" id="bu1">Add Movie</button>
+        </form>
+        <div class="button-container">
+            <h3>Your Movie List:</h3>
+            <button onclick="clearAllMovies()" class="clear-btn">Clear All</button>
+        </div>
+        <p id="MovieCount" class="movie-count">Total Movies: 0</p>
+        <ul id="MovieList">
+        </ul>
+    </div>
 </body>
 </html>
